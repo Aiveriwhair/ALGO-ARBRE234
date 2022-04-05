@@ -226,6 +226,9 @@ int main (int argc, char **argv)
   printf ("==== Afficher arbre ====\n") ;  
   afficher_arbre (a, 0) ;
 
+  //printf("Nombre de cles : %d\n", NombreCles(a));
+
+
   // Arbre234 recherche = RechercherCle(a, 13);
   // if(recherche == NULL) {
   //   printf("La cle n'existe pas\n");
