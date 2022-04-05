@@ -5,6 +5,7 @@
 #include "a234.h"
 
 #define max(a,b) ((a)>(b)?(a):(b))
+#define min(a,b) ((a)<(b)?(a):(b))
 
 
 int hauteur (Arbre234 a)
@@ -36,20 +37,49 @@ int NombreCles (Arbre234 a)
 
 int CleMax (Arbre234 a)
 {
-  /*
-     plus grande cle de l'arbre a
-  */
+  //done
+  int Cmax0, Cmax1, Cmax2, Cmax3 ;
+
+  if (a == NULL)
+    return NULL ;
+
+  if (a->t == 0)
+    return a ->cles[0] ;
+ 
+  Cmax0 = CleMax (a->fils [0]) ;
+  Cmax1 = CleMax (a->fils [1]) ;
+  Cmax2 = CleMax (a->fils [2]) ;
+  Cmax3 = CleMax (a->fils [3]) ;
+
+  /*int max = cles[0];
+  for (int i = 2; i <= a->t; i ++){
+    max = max(max,cle[i-1]);
+  }*/
+  return max (max (Cmax0,Cmax1),max (Cmax2,Cmax3));
   
-  return 0 ;
 }
 
 int CleMin (Arbre234 a)
 {
-  /*
-     Retourne plus petite cle de l'arbre a
-  */
+  //done
+  int Cmin0, Cmin1, Cmin2, Cmin3 ;
 
-  return 0 ;
+  if (a == NULL)
+    return NULL ;
+
+  if (a->t == 0)
+    return a ->cles[0] ;
+ 
+  Cmin0 = CleMin (a->fils [0]) ;
+  Cmin1 = CleMin (a->fils [1]) ;
+  Cmin2 = CleMin (a->fils [2]) ;
+  Cmin3 = CleMin (a->fils [3]) ;
+
+  /*int min = cles[0];
+  for (int i = 2; i <= a->t; i ++){
+    min = min(min,cle[i-1]);
+  }*/
+  return min (min (Cmin0, Cmin1), min (Cmin2, Cmin3));
 }
 
 Arbre234 RechercherCle (Arbre234 a, int cle)
