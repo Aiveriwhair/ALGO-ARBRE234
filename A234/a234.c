@@ -7,6 +7,27 @@
 #define max(a,b) ((a)>(b)?(a):(b))
 #define min(a,b) ((a)<(b)?(a):(b))
 
+int EstFeuille(Arbre234 a)
+{
+  if(a->t == 2) {
+    for (int i = 1; i <= 2; i++)
+    {
+      if (a->fils[i]->t != 0)
+      {
+        return 0;
+      }
+    }
+  } else {
+    for (int i = 0; i < a->t; i++)
+    {
+      if (a->fils[i]->t != 0)
+      {
+        return 0;
+      }
+    }
+  }
+  return 1;
+}
 
 int hauteur (Arbre234 a)
 {
@@ -28,16 +49,26 @@ int hauteur (Arbre234 a)
 
 int NombreCles (Arbre234 a)
 {
-  if (a->fils == NULL)
+  if (EstFeuille(a))
   {
-    return a->t;
+    return a->t - 1;
   }
   else
   {
     int keys = 0;
-    for (int i = 0; i < a->t + 1; i++)
-    {
-      keys += a->t + NombreCles(a->fils[i]);
+    keys += a->t - 1;
+    if(a->t == 2) {
+      for (int i = 1; i <= a->t; i++)
+      {
+        if(a->fils[i]->t != 0)
+          keys += NombreCles(a->fils[i]);
+      }
+    } else {
+      for (int i = 0; i < a->t; i++)
+      {
+        if(a->fils[i]->t != 0)
+          keys += NombreCles(a->fils[i]);
+      }
     }
     return keys;
   }
@@ -122,16 +153,28 @@ Arbre234 RechercherCle (Arbre234 a, int cle)
   if(a == NULL)
     return NULL;
 
-  for(int i = 0; i < a->t - 1; i++) {
-    if(a->cles[i] == cle)
+  if(a->t == 2) { //Dans le cas où t = 2 (2 fils), les clés commencent à 1 ainsi que les fils. ????
+    if(a->cles[1] == cle)
       return a;
+
+    for(int i = 1; i <= a->t; i++) {
+      Arbre234 n = RechercherCle(a->fils[i], cle);
+      if(n != NULL)
+        return n;
+    }
+  } else {
+    for(int i = 0; i < a->t - 1; i++) {
+      if(a->cles[i] == cle)
+        return a;
+    }
+
+    for(int i = 0; i < a->t; i++) {
+      Arbre234 n = RechercherCle(a->fils[i], cle);
+      if(n != NULL)
+        return n;
+    }
   }
 
-  for(int i = 0; i < a->t; i++) {
-    Arbre234 n = RechercherCle(a->fils[i], cle);
-    if(n != NULL)
-      return n;
-  }
 
   return NULL;
 }
@@ -197,7 +240,7 @@ void Detruire_Cle (Arbre234 *a, int cle)
 
 int main (int argc, char **argv)
 {
-  Arbre234 a ;
+  Arbre234 a;
 
   if (argc != 2)
     {
@@ -210,9 +253,15 @@ int main (int argc, char **argv)
   printf ("==== Afficher arbre ====\n") ;  
   afficher_arbre (a, 0) ;
 
+  //printf("Nombre de cles : %d\n", NombreCles(a));
 
-    //Arbre234 a = lire_arbre("data/arbre14");
-    //printf("Nombre de cles : %d\n", NombreCles(a));
+  // Arbre234 recherche = RechercherCle(a, 13);
+  // if(recherche == NULL) {
+  //   printf("La cle n'existe pas\n");
+  // }
+  // else {
+  //   printf("La cle existe\n");
+  // }
 
    
     printf ("clé max : %d \n", CleMax(a));
