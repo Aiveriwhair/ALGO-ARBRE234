@@ -28,11 +28,19 @@ int hauteur (Arbre234 a)
 
 int NombreCles (Arbre234 a)
 {
-  /*
-     Retourne le nombre de cles presentes dans l'arbre a
-  */
-  
-  return 0 ;
+  if (a->fils == NULL)
+  {
+    return a->t;
+  }
+  else
+  {
+    int keys = 0;
+    for (int i = 0; i < a->t + 1; i++)
+    {
+      keys += a->t + NombreCles(a->fils[i]);
+    }
+    return keys;
+  }
 }
 
 int CleMax (Arbre234 a)
@@ -84,12 +92,21 @@ int CleMin (Arbre234 a)
 
 Arbre234 RechercherCle (Arbre234 a, int cle)
 {
-  /*
-     rechercher si la cle a est presente dans
-     l'arbre a. Si oui, retourne le noeud ou se trouve la cle.
-  */
+  if(a == NULL)
+    return NULL;
 
-  return NULL ;
+  for(int i = 0; i < a->t - 1; i++) {
+    if(a->cles[i] == cle)
+      return a;
+  }
+
+  for(int i = 0; i < a->t; i++) {
+    Arbre234 n = RechercherCle(a->fils[i], cle);
+    if(n != NULL)
+      return n;
+  }
+
+  return NULL;
 }
 
 void AnalyseStructureArbre (Arbre234 a, int *feuilles, int *noeud2, int *noeud3, int *noeud4)
@@ -163,8 +180,11 @@ int main (int argc, char **argv)
 
   a = lire_arbre (argv [1]) ;
 
-  printf ("==== Afficher arbre ====\n") ;
-  
+  printf ("==== Afficher arbre ====\n") ;  
   afficher_arbre (a, 0) ;
+
+
+    Arbre234 a = lire_arbre("data/arbre14");
+    printf("Nombre de cles : %d\n", NombreCles(a));
 
 }
