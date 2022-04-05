@@ -21,4 +21,4 @@ void afficher_arbre (Arbre234 a, int niveau) ;
 
 void ajouter_cle (Arbre234 *a, int cle, int niveau, Arbre234 pere) ;
 
-  
+Arbre234 RechercherCle (Arbre234 a, int cle);  
