@@ -1,4 +1,4 @@
-all: a234 test
+all: a234
 
 OPTIONS_COMPIL=-Wall -g -c
 
