@@ -51,19 +51,28 @@ int CleMax (Arbre234 a)
   if (a == NULL)
     return NULL ;
 
-  if (a->t == 0)
-    return a ->cles[0] ;
+  if (a->t == 0){
+    return NULL;
+
+    }
  
   Cmax0 = CleMax (a->fils [0]) ;
   Cmax1 = CleMax (a->fils [1]) ;
   Cmax2 = CleMax (a->fils [2]) ;
   Cmax3 = CleMax (a->fils [3]) ;
 
-  /*int max = cles[0];
-  for (int i = 2; i <= a->t; i ++){
-    max = max(max,cle[i-1]);
-  }*/
-  return max (max (Cmax0,Cmax1),max (Cmax2,Cmax3));
+  int maximum;
+   if (a->t == 2)
+    maximum = a->cles[1];
+   else {
+    maximum = a->cles[0];
+    for (int i = 1; i < a->t - 1; i ++){
+      maximum = max(maximum,a->cles[i]);
+    }
+  }
+
+  return max(maximum,(max (max (Cmax0,Cmax1),max (Cmax2,Cmax3))) )   ;
+
   
 }
 
@@ -76,18 +85,36 @@ int CleMin (Arbre234 a)
     return NULL ;
 
   if (a->t == 0)
-    return a ->cles[0] ;
- 
-  Cmin0 = CleMin (a->fils [0]) ;
-  Cmin1 = CleMin (a->fils [1]) ;
-  Cmin2 = CleMin (a->fils [2]) ;
-  Cmin3 = CleMin (a->fils [3]) ;
+    return NULL ;
 
-  /*int min = cles[0];
-  for (int i = 2; i <= a->t; i ++){
-    min = min(min,cle[i-1]);
-  }*/
-  return min (min (Cmin0, Cmin1), min (Cmin2, Cmin3));
+  int minimum;
+  if (a->t == 2)
+    minimum = a->cles[1];
+  else{ 
+    minimum = a->cles[0];
+    for (int i = 1; i < a->t - 1; i ++){
+      minimum = min(minimum,a->cles[i]);
+    }
+  }
+
+  Cmin0 = CleMin (a->fils [0]) ;
+  if (Cmin0 == NULL){
+    Cmin0 = minimum;
+  }
+  Cmin1 = CleMin (a->fils [1]) ;
+  if (Cmin1 == NULL){
+    Cmin1 = minimum;
+  }
+  Cmin2 = CleMin (a->fils [2]) ;
+  if (Cmin2 == NULL){
+    Cmin2 = minimum;
+  }
+  Cmin3 = CleMin (a->fils [3]) ;
+  if (Cmin3 == NULL){
+    Cmin3 = minimum;
+  }
+
+  return min(minimum,(min (min (Cmin0, Cmin1), min (Cmin2, Cmin3))));
 }
 
 Arbre234 RechercherCle (Arbre234 a, int cle)
@@ -184,7 +211,10 @@ int main (int argc, char **argv)
   afficher_arbre (a, 0) ;
 
 
-    Arbre234 a = lire_arbre("data/arbre14");
-    printf("Nombre de cles : %d\n", NombreCles(a));
+    //Arbre234 a = lire_arbre("data/arbre14");
+    //printf("Nombre de cles : %d\n", NombreCles(a));
 
+   
+    printf ("clé max : %d \n", CleMax(a));
+    printf ("clé min : %d \n", CleMin(a));
 }
