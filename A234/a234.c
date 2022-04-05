@@ -54,12 +54,21 @@ int CleMin (Arbre234 a)
 
 Arbre234 RechercherCle (Arbre234 a, int cle)
 {
-  /*
-     rechercher si la cle a est presente dans
-     l'arbre a. Si oui, retourne le noeud ou se trouve la cle.
-  */
+  if(a == NULL)
+    return NULL;
 
-  return NULL ;
+  for(int i = 0; i < a->t - 1; i++) {
+    if(a->cles[i] == cle)
+      return a;
+  }
+
+  for(int i = 0; i < a->t; i++) {
+    Arbre234 n = RechercherCle(a->fils[i], cle);
+    if(n != NULL)
+      return n;
+  }
+
+  return NULL;
 }
 
 void AnalyseStructureArbre (Arbre234 a, int *feuilles, int *noeud2, int *noeud3, int *noeud4)
