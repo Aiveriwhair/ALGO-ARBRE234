@@ -6,6 +6,27 @@
 
 #define max(a,b) ((a)>(b)?(a):(b))
 
+int EstFeuille(Arbre234 a)
+{
+  if(a->t == 2) {
+    for (int i = 1; i <= 2; i++)
+    {
+      if (a->fils[i]->t != 0)
+      {
+        return 0;
+      }
+    }
+  } else {
+    for (int i = 0; i < a->t; i++)
+    {
+      if (a->fils[i]->t != 0)
+      {
+        return 0;
+      }
+    }
+  }
+  return 1;
+}
 
 int hauteur (Arbre234 a)
 {
@@ -27,16 +48,26 @@ int hauteur (Arbre234 a)
 
 int NombreCles (Arbre234 a)
 {
-  if (a->fils == NULL)
+  if (EstFeuille(a))
   {
-    return a->t;
+    return a->t - 1;
   }
   else
   {
     int keys = 0;
-    for (int i = 0; i < a->t + 1; i++)
-    {
-      keys += a->t + NombreCles(a->fils[i]);
+    keys += a->t - 1;
+    if(a->t == 2) {
+      for (int i = 1; i <= a->t; i++)
+      {
+        if(a->fils[i]->t != 0)
+          keys += NombreCles(a->fils[i]);
+      }
+    } else {
+      for (int i = 0; i < a->t; i++)
+      {
+        if(a->fils[i]->t != 0)
+          keys += NombreCles(a->fils[i]);
+      }
     }
     return keys;
   }
@@ -131,7 +162,7 @@ void Detruire_Cle (Arbre234 *a, int cle)
 
 int main (int argc, char **argv)
 {
-  Arbre234 a ;
+  Arbre234 a;
 
   if (argc != 2)
     {
@@ -145,7 +176,5 @@ int main (int argc, char **argv)
   afficher_arbre (a, 0) ;
 
 
-    Arbre234 a = lire_arbre("data/arbre14");
-    printf("Nombre de cles : %d\n", NombreCles(a));
-
+  printf("Nombre de cles %d\n", NombreCles(a));
 }
