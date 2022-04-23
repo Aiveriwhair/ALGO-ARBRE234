@@ -58,7 +58,7 @@ int NombreCles (Arbre234 a)
     int keys = 0;
     keys += a->t - 1;
     if(a->t == 2) {
-      for (int i = 1; i <= a->t; i++)
+      for (int i = 1; i <= 2; i++)
       {
         if(a->fils[i]->t != 0)
           keys += NombreCles(a->fils[i]);
@@ -181,9 +181,37 @@ Arbre234 RechercherCle (Arbre234 a, int cle)
 
 void AnalyseStructureArbre (Arbre234 a, int *feuilles, int *noeud2, int *noeud3, int *noeud4)
 {
-  /* 
-     calculer le nombre de feuilles, de 2-noeuds, 3-noeuds,et 4-noeuds
-  */
+  if (EstFeuille(a))
+  {
+    *feuilles += 1;
+    if (a->t == 2)
+      *noeud2 += 1;
+    if (a->t == 3)
+      *noeud3 += 1;
+    if (a->t == 4)
+      *noeud4 += 1;
+      return;
+  }
+
+    if (a->t == 2)
+      *noeud2 += 1;
+    if (a->t == 3)
+      *noeud3 += 1;
+    if (a->t == 4)
+      *noeud4 += 1;
+
+    if (a->t == 2)
+    {
+      AnalyseStructureArbre(a->fils[1], feuilles, noeud2, noeud3, noeud4);
+      AnalyseStructureArbre(a->fils[2], feuilles, noeud2, noeud3, noeud4);
+    }
+    else
+    {
+      for (int i = 0; i < a->t; i++)
+      {
+      AnalyseStructureArbre(a->fils[i], feuilles, noeud2, noeud3, noeud4);
+      }
+    }   
 }
 
 Arbre234 noeud_max (Arbre234 a)
@@ -236,6 +264,18 @@ void Detruire_Cle (Arbre234 *a, int cle)
 }
 
 
+void test_AnalyseStructureArbre(Arbre234 a){
+  int nbFeuilles = 0;
+  int nbNoeud2 = 0;
+  int nbNoeud3 = 0;
+  int nbNoeud4 = 0;
+  AnalyseStructureArbre(a, &nbFeuilles, &nbNoeud2, &nbNoeud3, &nbNoeud4);
+  printf("Structure de l'arbre :\n");
+  printf("  Nombre de feuilles : %d\n", nbFeuilles);
+  printf("  Nombre de noeud 2 : %d\n", nbNoeud2);
+  printf("  Nombre de noeud 3 : %d\n", nbNoeud3);
+  printf("  Nombre de noeud 4 : %d\n", nbNoeud4);
+}
 
 
 int main (int argc, char **argv)
@@ -253,6 +293,8 @@ int main (int argc, char **argv)
   printf ("==== Afficher arbre ====\n") ;  
   afficher_arbre (a, 0) ;
 
+
+  test_AnalyseStructureArbre(a);
   //printf("Nombre de cles : %d\n", NombreCles(a));
 
   // Arbre234 recherche = RechercherCle(a, 13);
@@ -264,6 +306,6 @@ int main (int argc, char **argv)
   // }
 
    
-    printf ("clé max : %d \n", CleMax(a));
-    printf ("clé min : %d \n", CleMin(a));
+    // printf ("clé max : %d \n", CleMax(a));
+    // printf ("clé min : %d \n", CleMin(a));
 }
