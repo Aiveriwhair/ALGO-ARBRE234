@@ -242,7 +242,7 @@ void afficher_noeud(Arbre234 noeud){
 
 void Afficher_Cles_Largeur (Arbre234 a)
 {
-pfile_t file = creer_file();
+  pfile_t file = creer_file();
   enfiler(file, a);
   while (!file_vide(file))
   {
