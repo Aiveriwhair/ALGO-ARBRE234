@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-#include "a234.h"
+#include"file.h"
 
 #define max(a,b) ((a)>(b)?(a):(b))
 #define min(a,b) ((a)<(b)?(a):(b))
@@ -214,24 +213,68 @@ void AnalyseStructureArbre (Arbre234 a, int *feuilles, int *noeud2, int *noeud3,
     }   
 }
 
+
 Arbre234 noeud_max (Arbre234 a)
 {
-  /*
-    Retourne le noeud avec la somme maximale des cles internes
-  */
   
-  return NULL ;
 }
 
+void afficher_noeud(Arbre234 noeud){
+  if (noeud->t == 0)
+  {
+    return;
+  }
+
+  printf("( ");
+  if (noeud->t == 2)
+  {
+    printf("%d %d ",noeud->cles[0], noeud->cles[1]);
+  }
+  else
+  {
+    for (int i = 0; i < noeud->t - 1; i++)
+    {
+      printf("%d ", noeud->cles[i]);
+    }
+  }
+  printf(")\n");
+}
 
 void Afficher_Cles_Largeur (Arbre234 a)
 {
-  /*
-    Afficher le cles de l'arbre a avec
-    un parcours en largeur
-  */
+  int isRoot = 1;
+pfile_t file = creer_file();
+  enfiler(file, a);
+  while (!file_vide(file))
+  {
+    Arbre234 noeud = defiler(file);
+    if (!isRoot)
+      afficher_noeud(noeud);
+    else
+      printf("( %d )\n", noeud->cles[1]); isRoot = 0;
+    
 
-  return ;
+    if (noeud->t == 2)
+    {
+     for (int i = 1; i < 3; i++)
+     {
+       if (noeud->fils[i] != NULL)
+       {
+         enfiler(file, noeud->fils[i]);
+       }
+     }
+    }
+    else
+    {
+      for (int i = 0; i < noeud->t; i++)
+      {
+        if (noeud->fils[i] != NULL)
+       {
+         enfiler(file, noeud->fils[i]);
+       }
+      }
+    } 
+  }
 }
 
 void Affichage_Cles_Triees_Recursive (Arbre234 a)
@@ -293,8 +336,9 @@ int main (int argc, char **argv)
   printf ("==== Afficher arbre ====\n") ;  
   afficher_arbre (a, 0) ;
 
+  Afficher_Cles_Largeur(a);
 
-  test_AnalyseStructureArbre(a);
+//  test_AnalyseStructureArbre(a);
   //printf("Nombre de cles : %d\n", NombreCles(a));
 
   // Arbre234 recherche = RechercherCle(a, 13);
