@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include"file.h"
+#include "pile.h"
 
 #define max(a,b) ((a)>(b)?(a):(b))
 #define min(a,b) ((a)<(b)?(a):(b))
@@ -386,7 +387,38 @@ void Affichage_Cles_Triees_NonRecursive (Arbre234 a)
      Cette fonction ne sera pas recursive
      Utiliser une pile
   */
-
+  int nb_cles = NombreCles(a);
+  int* cles = malloc(sizeof(int) * nb_cles);
+  int pos = 0;
+  ppile_t pile = creer_pile();
+  empiler(pile, a);
+  while(!pile_vide(pile)) {
+    Arbre234 noeud = depiler(pile);
+    if(noeud->t == 2) {
+      cles[pos] = noeud->cles[1];
+      pos++;
+      for (int i = 1; i < 3; i++) {
+        if (noeud->fils[i] != NULL) {
+          empiler(pile, noeud->fils[i]);
+        }
+      }
+    } else {
+      for(int i = 0; i < noeud->t - 1; i++) {
+        cles[pos] = noeud->cles[i];
+        pos++;
+      }
+      for (int i = 0; i < noeud->t; i++) {
+        if (noeud->fils[i] != NULL) {
+          empiler(pile, noeud->fils[i]);
+        }
+      }
+    }
+  }
+  Tri_Selection(cles, nb_cles);
+  for(int i = 0; i < nb_cles; i++)
+    printf("%d ", cles[i]);
+  printf("\n");
+  free(cles);
 }
 
 
@@ -429,6 +461,8 @@ int main (int argc, char **argv)
   printf ("==== Afficher arbre ====\n") ;  
   afficher_arbre (a, 0) ;
   afficher_noeud(noeud_max(a));
+
+  Affichage_Cles_Triees_NonRecursive(a);
 
 //  test_AnalyseStructureArbre(a);
   //printf("Nombre de cles : %d\n", NombreCles(a));

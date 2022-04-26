@@ -2,7 +2,8 @@
 
 /* structure noeud presentee en cours */
 
-
+#ifndef arbre234_h
+#define arbre234_h
 typedef struct n {
   
   int      t         ; /* t type de noeud 0, 2, 3 ou 4 */
@@ -21,4 +22,9 @@ void afficher_arbre (Arbre234 a, int niveau) ;
 
 void ajouter_cle (Arbre234 *a, int cle, int niveau, Arbre234 pere) ;
 
-Arbre234 RechercherCle (Arbre234 a, int cle);  
+Arbre234 RechercherCle (Arbre234 a, int cle); 
+#endif
+
+
+
+ 
