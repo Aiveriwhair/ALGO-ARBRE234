@@ -174,7 +174,6 @@ Arbre234 RechercherCle (Arbre234 a, int cle)
     }
   }
 
-
   return NULL;
 }
 
@@ -213,10 +212,52 @@ void AnalyseStructureArbre (Arbre234 a, int *feuilles, int *noeud2, int *noeud3,
     }   
 }
 
+int sommeCles(Arbre234 a){
+  int somme = 0;
+  if (a->t == 2)
+  {
+    return a->cles[1];
+  }
+  
+  for (int i = 0; i < a->t - 1; i++)
+  {
+    somme += a->cles[i];
+  }
+  return somme;
+}
 
 Arbre234 noeud_max (Arbre234 a)
 {
-  
+  Arbre234 max = a;
+  pfile_t file = creer_file();
+  enfiler(file, a);
+  while (!file_vide(file))
+  {
+    Arbre234 noeud = defiler(file);
+    if(sommeCles(noeud) > sommeCles(max))
+      max = noeud;
+    if (noeud->t == 2)
+    {
+     for (int i = 1; i < 3; i++)
+     {
+       if (noeud->fils[i] != NULL)
+       {
+         enfiler(file, noeud->fils[i]);
+       }
+     }
+    }
+    else
+    {
+      for (int i = 0; i < noeud->t; i++)
+      {
+        if (noeud->fils[i] != NULL)
+       {
+         enfiler(file, noeud->fils[i]);
+       }
+      }
+    } 
+  }
+  return max;
 }
 
 void afficher_noeud(Arbre234 noeud){
@@ -228,7 +269,7 @@ void afficher_noeud(Arbre234 noeud){
   printf("( ");
   if (noeud->t == 2)
   {
-    printf("%d", noeud->cles[1]);
+    printf("%d ", noeud->cles[1]);
   }
   else
   {
@@ -330,8 +371,7 @@ int main (int argc, char **argv)
 
   printf ("==== Afficher arbre ====\n") ;  
   afficher_arbre (a, 0) ;
-
-  Afficher_Cles_Largeur(a);
+  afficher_noeud(noeud_max(a));
 
 //  test_AnalyseStructureArbre(a);
   //printf("Nombre de cles : %d\n", NombreCles(a));
