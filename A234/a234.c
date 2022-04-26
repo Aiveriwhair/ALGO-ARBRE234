@@ -228,7 +228,7 @@ void afficher_noeud(Arbre234 noeud){
   printf("( ");
   if (noeud->t == 2)
   {
-    printf("%d %d ",noeud->cles[0], noeud->cles[1]);
+    printf("%d", noeud->cles[1]);
   }
   else
   {
@@ -242,17 +242,12 @@ void afficher_noeud(Arbre234 noeud){
 
 void Afficher_Cles_Largeur (Arbre234 a)
 {
-  int isRoot = 1;
 pfile_t file = creer_file();
   enfiler(file, a);
   while (!file_vide(file))
   {
     Arbre234 noeud = defiler(file);
-    if (!isRoot)
-      afficher_noeud(noeud);
-    else
-      printf("( %d )\n", noeud->cles[1]); isRoot = 0;
-    
+    afficher_noeud(noeud);
 
     if (noeud->t == 2)
     {
