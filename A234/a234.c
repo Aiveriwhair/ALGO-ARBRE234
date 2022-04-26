@@ -234,13 +234,70 @@ void Afficher_Cles_Largeur (Arbre234 a)
   return ;
 }
 
+void Lister_Cles(Arbre234 a, int* cles, int* pos)
+{
+  /*
+    Retourne les cles de l'arbre a dans le tableau cles
+    et le nombre de cles dans nb_cles
+  */
+
+  if(a == NULL)
+    return;
+
+  if(a->t == 2) { //Dans le cas où t = 2 (2 fils), les clés commencent à 1 ainsi que les fils. ????
+    cles[*pos] = a->cles[1];
+    (*pos)++;
+
+    for(int i = 1; i <= a->t; i++) {
+      Lister_Cles(a->fils[i], cles, pos);
+      //pos+=a->fils[i]->t;
+    }
+  } else {
+    for(int i = 0; i < a->t - 1; i++) {
+      cles[*pos] = a->cles[i];
+      (*pos)++;
+    }
+
+    for(int i = 0; i < a->t; i++) {
+      Lister_Cles(a->fils[i], cles, pos);
+      //pos+=a->fils[i]->t;
+    }
+  }
+}
+
+void Tri_Selection(int* T, int N)
+{
+  /*
+    Tri par selection
+  */
+
+  int i,j,c;
+  for(i=0;i<N-1;i++) {
+    for(j=i+1;j<N;j++) {
+      if(T[i]>T[j]) {
+        c=T[i];
+        T[i]=T[j];
+        T[j]=c;
+      }
+    }
+  }
+}
+
 void Affichage_Cles_Triees_Recursive (Arbre234 a)
 {
   /* 
      Afficher les cles en ordre croissant
      Cette fonction sera recursive
   */
-     
+  int nb_cles = NombreCles(a);
+  int* cles = malloc(sizeof(int) * nb_cles);
+  int pos = 0;
+  Lister_Cles(a, cles, &pos);
+  Tri_Selection(cles, nb_cles);
+  for(int i = 0; i < nb_cles; i++)
+    printf("%d ", cles[i]);
+  printf("\n");
+  free(cles);
 }
 
 void Affichage_Cles_Triees_NonRecursive (Arbre234 a)
@@ -295,7 +352,11 @@ int main (int argc, char **argv)
 
 
   test_AnalyseStructureArbre(a);
-  //printf("Nombre de cles : %d\n", NombreCles(a));
+  
+  printf("Nombre de cles : %d\n", NombreCles(a));
+
+  printf("Affichage_Cles_Triees_Recursive: ");
+  Affichage_Cles_Triees_Recursive(a);
 
   // Arbre234 recherche = RechercherCle(a, 13);
   // if(recherche == NULL) {
